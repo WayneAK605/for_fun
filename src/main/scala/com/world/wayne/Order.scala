@@ -4,12 +4,13 @@ import com.world.wayne.Burgers.{Cheeseburger, Hamburger}
 
 import java.util.Scanner
 import scala.collection.mutable.ArrayBuffer
+import scala.util.matching.Regex
 
-class Order(order: Array[Burgers], quantities: Array[Int]) {
+class Order(order: ArrayBuffer[Burgers], quantities: ArrayBuffer[Int]) {
 
   private final val ORDER_AND_QTY = order zip quantities
 
-  val customerOrders: Array[Menu] =
+  val customerOrders: ArrayBuffer[Menu] =
     ORDER_AND_QTY.map(
     burgerType => burgerType._1.name match {
       case "Cheeseburger" => new Cheeseburger(burgerType._2)
@@ -22,11 +23,10 @@ class Order(order: Array[Burgers], quantities: Array[Int]) {
 object Order {
   def apply() {
     val sc = new Scanner(System.in)
-    println("How many hamburger do you want?")
-    val numOfHamBurger = sc.nextInt()
 
-    println("How many cheeseburger do you want?")
-    val numOfCheeseBurger = sc.nextInt()
+    val numOfHamBurger = screenInput(sc, "How many hamburger do you want?", "[0-9]+".r).toInt
+
+    val numOfCheeseBurger = screenInput(sc, "How many cheeseburger do you want?", "[0-9]+".r).toInt
 
     var orders: ArrayBuffer[Burgers] = ArrayBuffer[Burgers]()
     var quantity: ArrayBuffer[Int] = ArrayBuffer[Int]()
@@ -41,10 +41,28 @@ object Order {
       quantity += numOfHamBurger
     }
 
-    DailyStatus.addOrder(new Order(orders.toArray, quantity.toArray))
+    DailyStatus.addOrder(new Order(orders, quantity))
 
-    println("Is there a next customer?")
-    val hasNext = sc.next()
-    if(hasNext.toLowerCase == "y") Order.apply()
+    val hasNext = screenInput(sc, "Is there a next customer?", "(yes|no)".r)
+    if(hasNext.toLowerCase == "yes") Order.apply()
+  }
+
+  def screenInput(sc: Scanner, prompt: String, userPromptRegexPattern: Regex): String ={
+
+    var loop = true
+    var userInput: String = null
+
+    while(loop) {
+      print(s"$prompt [${userPromptRegexPattern.toString()}]==> ")
+
+      userPromptRegexPattern.findFirstIn(sc.nextLine()) match {
+         case Some(f) => {
+           loop = false
+           userInput = f
+         }
+         case None => loop = true
+       }
+    }
+    userInput
   }
 }

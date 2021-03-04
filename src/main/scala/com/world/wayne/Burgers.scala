@@ -4,7 +4,7 @@ sealed case class Burgers(name: String)
 
 object Burgers {
 
-  class Hamburger(quantity: Int) extends Menu {
+  class Hamburger(quantity: Int) extends Items {
 
     private final val UNIT_PRICE: Float = 1.19f
 
@@ -19,7 +19,7 @@ object Burgers {
     override def burgerType: String = "Hamburger"
   }
 
-  class Cheeseburger(quantity: Int) extends Menu {
+  class Cheeseburger(quantity: Int) extends Items {
 
     private final val UNIT_PRICE: Float = 1.39f
 

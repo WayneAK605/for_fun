@@ -10,7 +10,7 @@ class Order(order: ArrayBuffer[Burgers], quantities: ArrayBuffer[Int]) {
 
   private final val ORDER_AND_QTY = order zip quantities
 
-  val customerOrders: ArrayBuffer[Menu] =
+  val customerOrders: ArrayBuffer[Items] =
     ORDER_AND_QTY.map(
     burgerType => burgerType._1.name match {
       case "Cheeseburger" => new Cheeseburger(burgerType._2)

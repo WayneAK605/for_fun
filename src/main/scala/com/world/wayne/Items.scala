@@ -1,6 +1,6 @@
 package com.world.wayne
 
-trait Menu {
+trait Items {
   def qty: Int
   def burgerType: String
   def unitPrice: Float

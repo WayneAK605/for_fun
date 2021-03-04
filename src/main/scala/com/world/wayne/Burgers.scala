@@ -12,7 +12,7 @@ object Burgers {
 
     override def total: Float = UNIT_PRICE * quantity
 
-    println(s"Ordered Hamburger Qty: $quantity.  Total: " + "$" +  s"${total} Thank You!")
+    println(s"Ordered Hamburger Qty: $quantity.  Total: " + "$" +  f"${total}%.2f Thank You!")
 
     override def qty: Int = quantity
 
@@ -27,7 +27,7 @@ object Burgers {
 
     override def total: Float = UNIT_PRICE * quantity
 
-    println(s"Ordered Hamburger Qty: $quantity.  Total: " + "$" +  s"${total} Thank You!")
+    println(s"Ordered Cheeseburger Qty: $quantity.  Total: " + "$" +  f"${total}%.2f Thank You!")
 
     override def qty: Int = quantity
 

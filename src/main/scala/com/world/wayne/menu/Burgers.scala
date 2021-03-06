@@ -1,18 +1,16 @@
 package com.world.wayne.menu
 
-import com.world.wayne.common.Utilities.roundingEnhance
-
 sealed case class Burgers(name: String)
 
 object Burgers {
 
   class Hamburger(quantity: Int) extends Items {
 
-    private final val UNIT_PRICE: Double = 1.19
+    private final val UNIT_PRICE: BigDecimal = 1.19
 
-    override def unitPrice: Double = UNIT_PRICE.roundTwoDecimal
+    override def unitPrice: BigDecimal = UNIT_PRICE
 
-    override def total: Double = (UNIT_PRICE * quantity).roundTwoDecimal
+    override def total: BigDecimal = (UNIT_PRICE * quantity)
 
     println(s"Ordered Hamburger Qty: $quantity @$$$unitPrice.  Total: " + "$" +  f"${total}%.2f Thank You!")
 
@@ -23,11 +21,11 @@ object Burgers {
 
   class Cheeseburger(quantity: Int) extends Items {
 
-    private final val UNIT_PRICE: Double = 1.390.roundTwoDecimal
+    private final val UNIT_PRICE: BigDecimal = 1.39
 
-    override def unitPrice: Double = UNIT_PRICE.roundTwoDecimal
+    override def unitPrice: BigDecimal = UNIT_PRICE
 
-    override def total: Double = (UNIT_PRICE * quantity).roundTwoDecimal
+    override def total: BigDecimal = (UNIT_PRICE * quantity)
 
     println(s"Ordered Cheeseburger Qty: $quantity @$$$unitPrice.  Total: " + "$" +  f"${total}%.2f Thank You!")
 

@@ -11,6 +11,7 @@ import scala.collection.mutable.ArrayBuffer
 class Order(order: ArrayBuffer[Burgers], quantities: ArrayBuffer[Int]) {
 
   private final val ORDER_AND_QTY = order zip quantities
+  final val NJ_TAX_RATE = 0.0625
 
   val customerOrders: ArrayBuffer[Items] = {
     ORDER_AND_QTY.map(
@@ -22,20 +23,22 @@ class Order(order: ArrayBuffer[Burgers], quantities: ArrayBuffer[Int]) {
     )
   }
 
-  var orderTotal: Double = 0.0
+  var orderTotal: BigDecimal = 0.0
   var numberOfItems: Int = 0
-  var itemized: List[(String, Int, Double)] = List()
+  var itemized: List[(String, Int, BigDecimal)] = List()
 
   final val BURGER_TYPE_INDEX = 0
   final val ORDER_QTY_INDEX = 1
   final val ORDER_TOTAL_INDEX = 2
 
 
-  for(item <- customerOrders) {
-    orderTotal += item.total.roundTwoDecimal
+  for (item <- customerOrders) {
+    orderTotal += item.total
     numberOfItems += item.qty
-    itemized:+= ((item.burgerType, item.qty, item.total.roundTwoDecimal))
+    itemized :+= ((item.burgerType, item.qty, item.total))
   }
+  var salesTaxes: BigDecimal = (orderTotal * NJ_TAX_RATE).toDouble.roundTwoDecimal
+  val grandOrderTotal = orderTotal + salesTaxes
 }
 
 object Order {
@@ -59,12 +62,17 @@ object Order {
       quantity += numOfHamBurger
     }
 
-    val newOrder = new Order(orders, quantity)
-    TakePayment(sc, newOrder)
+    if (orders.nonEmpty) {
+      val newOrder = new Order(orders, quantity)
+      TakePayment(sc, newOrder)
 
-    DailyStatus.addOrder(newOrder)
+      DailyStatus.addOrder(newOrder)
 
-    val hasNext = screenInput(sc, "Is there a next customer?", "(yes|no)".r)
-    if (hasNext.toLowerCase == "yes") Order.apply()
+      val hasNext = screenInput(sc, "Is there a next customer?", "(yes|no)".r)
+      if (hasNext.toLowerCase == "yes") Order.apply()
+    } else {
+      if(screenInput(sc, "Is there a next customer?", "(yes|no)".r) == "yes")
+        Order.apply()
+    }
   }
 }

@@ -5,12 +5,12 @@ import com.world.wayne.cashier.Order
 object DailyStatus {
   private var numberOfCustomer: Int = 0
   private var numberOfItem: Int = 0
-  private var totalProfit: Double = 0
+  private var totalProfit: BigDecimal = 0
 
   def addOrder(order: Order) = {
     numberOfCustomer += 1
     numberOfItem += order.numberOfItems
-    totalProfit += order.orderTotal
+    totalProfit += order.grandOrderTotal
   }
 
   def printDailyStats() = {

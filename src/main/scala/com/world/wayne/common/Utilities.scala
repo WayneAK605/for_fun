@@ -24,8 +24,9 @@ object Utilities {
   }
 
   implicit class roundingEnhance(n: Double) {
-    def roundTwoDecimal: Double = {
-      Math.round(n * 100.0) / 100.0
+    def roundTwoDecimal: BigDecimal = {
+      val num = BigDecimal(n)
+      num.setScale(2, BigDecimal.RoundingMode.HALF_UP)
     }
   }
 }

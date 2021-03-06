@@ -5,7 +5,7 @@ trait Items {
 
   def burgerType: String
 
-  def unitPrice: Double
+  def unitPrice: BigDecimal
 
-  def total: Double
+  def total: BigDecimal
 }
